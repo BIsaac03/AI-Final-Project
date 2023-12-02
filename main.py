@@ -8,17 +8,13 @@
 #
 # External Sources Consulted:
 #
-# Setence datasets from: https://tatoeba.org/en/downloads
+# Sentence datasets from: https://tatoeba.org/en/downloads
 #
 # Extensive use of TensorFlow webpages, particularly:
 #       https://www.tensorflow.org/tutorials/load_data/pandas_dataframe
 #       https://www.tensorflow.org/tutorials/keras/text_classification, 
 #       https://www.tensorflow.org/api_docs/python/tf/keras/layers/TextVectorization
-#
-# https://www.kaggle.com/code/martinkk5575/language-detection/notebook
-#
-#
-#
+
 ######################################################
 
 import tensorflow as tf
@@ -45,8 +41,9 @@ print("10. Hungarian")
 # loads trained model
 model = tf.keras.models.load_model('language_probability_model.keras')
 
+# creates layer to vectorize text inputs
 sentenceTrainingData = pd.read_csv('sentenceTrainingData.tsv', sep='\t', names=["Sentence"])
-vectorize_layer = layers.TextVectorization()
+vectorize_layer = layers.TextVectorization(max_tokens = 2000, split = 'character', ngrams = 2)
 vectorize_layer.adapt(sentenceTrainingData)
 
 history = False                         # checks if any text has been entered into the program
@@ -54,7 +51,7 @@ keepGoing = True                        # checks if the program should continue 
 
 # loops until user chooses to leave
 while keepGoing:
-    text = input("\nEnter a sentence or phrase to analyze. To view more details about the previous entry, enter '+'. To exit the program, enter 'EXIT'.  ")
+    text = input("\nEnter a sentence or phrase to analyze. To view more details about the previous entry, enter '+'. To exit the program, enter 'EXIT'.\n")
 
     # quits program
     if text == 'EXIT':
